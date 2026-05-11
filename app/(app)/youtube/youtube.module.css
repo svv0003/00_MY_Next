@@ -470,18 +470,11 @@
   }
 
     .input {
-        width: 320px;
-        height: 40px;
-        align-items: center;
-        padding: 10px 20px;
+        width: 80%;
+        height: 36px;
+        padding: 0 7px;
+        font-size: 0.7rem;
     }
-
-  .input {
-    width: 80%;
-      height: 36px;
-    padding: 0 7px;
-    font-size: 0.7rem;
-  }
 
   .pasteBtn,
   .saveBtn {
@@ -502,6 +495,8 @@
   }
 
     .filterFab {
+        position: fixed;
+        left: 20px;
         bottom: 8px;
         width: 34px;
         height: 34px;

@@ -89,6 +89,7 @@ a {
 메인 컨테이너 / 타이틀
 ****************************/
 .main-container {
+    min-height: 100dvh;
     text-align: center;
     padding: 5%;
 

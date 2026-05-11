@@ -3,13 +3,17 @@
 import type { Category } from "@/lib/supabase";
 import styles from "./youtube.module.css";
 
+export type SortOrder = "recent" | "oldest";
+
 type Props = {
   categories: Category[];
   filterCategoryIds: number[];
   columns: number;
+  sortOrder: SortOrder;
   onToggle: (catId: number) => void;
   onSelectAll: () => void;
   onColumnsChange: (cols: number) => void;
+  onSortChange: (order: SortOrder) => void;
   onClose: () => void;
 };
 
@@ -17,9 +21,11 @@ export default function FilterModal({
   categories,
   filterCategoryIds,
   columns,
+  sortOrder,
   onToggle,
   onSelectAll,
   onColumnsChange,
+  onSortChange,
   onClose,
 }: Props) {
   const allActive = filterCategoryIds.length === 0;
