@@ -67,7 +67,7 @@
   /* 영상 영역 가로 90% — 양쪽 5% 패딩 */
   display: grid;
   grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
   text-align: center;
   padding: 20px 5%;
   width: 100%;
@@ -471,13 +471,15 @@
 
   .input {
     width: 80%;
+      height: 40px;
     padding: 0 7px;
     font-size: 0.7rem;
   }
 
   .pasteBtn,
   .saveBtn {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
+      font-weight: 500;
   }
 
   .videoContainer {

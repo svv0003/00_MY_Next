@@ -27,22 +27,22 @@ a {
   justify-content: space-between;
   align-items: center;
   padding: 14px 24px;
-  margin-bottom: 24px;
+  /*margin-bottom: 24px;*/
 }
 
 .home-btn {
   position: relative;
   display: inline-block;
-  width: 32px;
-  height: 32px;
+  width: 50px;
+  height: 50px;
 }
 
 .home-btn .icon {
   position: absolute;
   top: 0;
   left: 0;
-  width: 32px;
-  height: 32px;
+  width: 50px;
+  height: 50px;
   vertical-align: middle;
   transition: opacity 0.3s ease;
 }
@@ -60,7 +60,8 @@ a {
 }
 
 #menu-btn {
-  height: 32px;
+    width: 50px;
+  height: 40px;
   background-color: rgb(200, 0, 87);
   border: 2px solid rgba(0, 0, 0, 0.5);
   border-radius: 6px;
@@ -88,7 +89,9 @@ a {
 메인 컨테이너 / 타이틀
 ****************************/
 .main-container {
-  text-align: center;
+    text-align: center;
+    padding: 5%;
+
 }
 
 .title-container {
@@ -105,16 +108,31 @@ a {
 
 @media (max-width: 760px) {
   .main-container {
-    padding: 10px 0;
+    /*padding: 10px 0;*/
   }
 
   .words {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     margin-bottom: 30px;
   }
 
   .nav-container {
     padding: 12px 16px;
-    margin-bottom: 16px;
+    /*margin-bottom: 20px;*/
   }
+
+    .home-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .home-btn .icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    #menu-btn {
+        width: 40px;
+        height: 30px;
+    }
 }
