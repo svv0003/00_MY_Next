@@ -1,0 +1,492 @@
+/****************************
+검색 스타일
+****************************/
+.searchContainer {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  gap: 0;
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+.input {
+  width: 320px;
+  height: 40px;
+  align-items: center;
+  padding: 10px 20px;
+  max-width: 500px;
+  max-height: 40px;
+  background-color: #7c7c7c;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 4px 0 0 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  outline: none;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+}
+
+.input::placeholder {
+  color: #ffffff;
+}
+
+.pasteBtn,
+.saveBtn {
+  width: 80px;
+  height: 40px;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-left: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(200, 0, 87);
+}
+
+.pasteBtn {
+  border-radius: 0;
+}
+
+.saveBtn {
+  border-radius: 0 4px 4px 0;
+}
+
+.pasteBtn:hover,
+.saveBtn:hover {
+  background-color: rgb(170, 0, 87);
+}
+
+/****************************
+영상 컨테이너
+****************************/
+.videoContainer {
+  text-align: center;
+  padding: 5% 10%;
+  width: 100%;
+  box-sizing: border-box;
+  justify-self: stretch;
+}
+
+.videoResponsive {
+  position: relative;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto 10px auto;
+  border-radius: 2%;
+}
+
+.videoResponsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/****************************
+저장된 영상 카드 (스와이프 삭제)
+****************************/
+.savedVideo {
+  --slide-w: 80px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto 10px auto;
+  border-radius: 2%;
+  background: #000;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  transition: transform 0.3s ease;
+  z-index: 2;
+  background: #000;
+}
+
+.videoWrapper > iframe,
+.videoWrapper > .videoThumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.videoThumbnail {
+  background-size: cover;
+  background-position: center;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.playBtn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  width: 68px;
+  height: 48px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.playBtn:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.playBtn svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.deleteButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--slide-w);
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.deleteButton:hover {
+  background-color: rgb(170, 0, 87);
+}
+
+/****************************
+카테고리 모달
+****************************/
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: #2d2d2d;
+  border: 1px solid #ffffff22;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modalTitle {
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+  color: rgb(255, 0, 111);
+  text-align: center;
+}
+
+.modalCloseX {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  color: #ffffffcc;
+  cursor: pointer;
+  font-size: 1.6rem;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.modalCloseX:hover {
+  background-color: #ffffff22;
+  color: #ffffff;
+}
+
+.modalError {
+  background: #ff4d4d33;
+  color: #ffb3b3;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.modalLabel {
+  display: block;
+  font-size: 0.85rem;
+  color: #ffffffaa;
+  margin: 0 0 6px;
+}
+
+.categorySelect {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  background: #3a3a3a;
+  color: #ffffff;
+  border: 1px solid #ffffff44;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  outline: none;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.categorySelect:focus {
+  border-color: rgb(200, 0, 87);
+}
+
+.categorySelect:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.categoryAddRow {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.categoryAddInput {
+  flex: 1;
+  height: 36px;
+  padding: 0 10px;
+  background: #7c7c7c;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.categoryAddInput::placeholder {
+  color: #ffffffaa;
+}
+
+.categoryAddBtn {
+  height: 36px;
+  padding: 0 12px;
+  background-color: #4f4f4f;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.categoryAddBtn:hover:not(:disabled) {
+  background-color: #666;
+}
+
+.categoryAddBtn:disabled,
+.modalConfirm:disabled,
+.modalCancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modalActions {
+  display: flex;
+  gap: 8px;
+}
+
+.modalCancel,
+.modalConfirm {
+  flex: 1;
+  height: 40px;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #ffffff;
+  transition: background-color 0.2s ease;
+}
+
+.modalCancel {
+  background-color: #4f4f4f;
+}
+
+.modalCancel:hover:not(:disabled) {
+  background-color: #666;
+}
+
+.modalConfirm {
+  background-color: rgb(200, 0, 87);
+}
+
+.modalConfirm:hover:not(:disabled) {
+  background-color: rgb(170, 0, 87);
+}
+
+/****************************
+필터 floating 버튼 + 모달 안의 칩
+****************************/
+.filterFab {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgb(200, 0, 87);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  z-index: 500;
+}
+
+.filterFab:hover {
+  background-color: rgb(170, 0, 87);
+  transform: scale(1.05);
+}
+
+.filterFab:active {
+  transform: scale(0.96);
+}
+
+.filterFabBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: rgb(200, 0, 87);
+  font-size: 0.7rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(200, 0, 87);
+  box-sizing: border-box;
+}
+
+.filterRowModal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.filterChip {
+  background: #3a3a3a;
+  color: #ffffff;
+  border: 1px solid #ffffff44;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.filterChip:hover {
+  background: #4a4a4a;
+}
+
+.filterChipActive {
+  background: rgb(200, 0, 87);
+  border-color: #ffffff;
+}
+
+.filterChipActive:hover {
+  background: rgb(170, 0, 87);
+}
+
+/****************************
+카테고리 뱃지 (카드 위에 표시)
+****************************/
+.categoryBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  z-index: 3;
+  pointer-events: none;
+  max-width: calc(100% - 16px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/****************************
+모바일 반응형
+****************************/
+@media (max-width: 760px) {
+  .searchContainer {
+    max-width: 80%;
+    margin: 40px auto 30px auto;
+  }
+
+  .input {
+    width: 80%;
+    padding: 0 7px;
+    font-size: 0.7rem;
+  }
+
+  .pasteBtn,
+  .saveBtn {
+    font-size: 0.7rem;
+  }
+
+  .videoContainer {
+    padding: 5%;
+  }
+
+  .savedVideo {
+    --slide-w: 70px;
+  }
+
+  .deleteButton {
+    font-size: 0.75rem;
+  }
+}

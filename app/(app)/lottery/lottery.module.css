@@ -1,0 +1,105 @@
+/****************************
+버튼
+****************************/
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px auto;
+}
+
+.createBtn,
+.deleteBtn {
+  width: 100px;
+  height: 40px;
+  background-color: rgb(200, 0, 87);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.createBtn:hover,
+.deleteBtn:hover {
+  background-color: rgb(170, 0, 87);
+}
+
+/****************************
+결과 테이블
+****************************/
+.lotteryContainer {
+  text-align: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 8px 10px;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.table td {
+  border: none;
+  text-align: center;
+}
+
+.countCell {
+  color: rgb(255, 255, 255);
+  width: 80px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.numberCell {
+  color: rgb(0, 0, 0);
+  background-color: white;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+}
+
+.highlight {
+  background-color: rgb(200, 0, 87);
+  color: #ffffff;
+}
+
+.table tr {
+  background-color: transparent;
+}
+
+@media (max-width: 760px) {
+  .createBtn,
+  .deleteBtn {
+    font-size: 0.9rem;
+  }
+
+  .table {
+    max-width: 80%;
+    border-spacing: 3px 8px;
+    margin: 10px auto;
+    font-size: 0.8rem;
+  }
+
+  .countCell {
+    width: 14vw;
+    font-size: 0.8rem;
+  }
+
+  .numberCell {
+    font-size: 0.8rem;
+    width: 8vw;
+    height: 8vw;
+    line-height: 8vw;
+    min-width: 36px;
+    min-height: 30px;
+  }
+}

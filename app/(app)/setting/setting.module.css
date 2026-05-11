@@ -1,0 +1,25 @@
+.section {
+  max-width: 400px;
+  margin: 30px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.logoutBtn {
+  width: 100%;
+  height: 44px;
+  background-color: rgb(200, 0, 87);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease;
+}
+
+.logoutBtn:hover {
+  background-color: rgb(170, 0, 87);
+}

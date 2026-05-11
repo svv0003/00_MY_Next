@@ -1,0 +1,123 @@
+/****************************
+배경, 폰트 스타일
+****************************/
+* {
+  touch-action: manipulation; /* 더블 탭 확대 방지 */
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #4e4e4e;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/****************************
+공통 네비게이션
+****************************/
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+.home-btn {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+}
+
+.home-btn .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  vertical-align: middle;
+  transition: opacity 0.3s ease;
+}
+
+.home-btn .hover {
+  opacity: 0;
+}
+
+.home-btn:hover .default {
+  opacity: 0;
+}
+
+.home-btn:hover .hover {
+  opacity: 1;
+}
+
+#menu-btn {
+  height: 40px;
+  background-color: rgb(200, 0, 87);
+  border: 2px solid #000000;
+  border-radius: 4px;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#menu-btn:hover {
+  background-color: rgb(170, 0, 87);
+}
+
+/****************************
+메인 컨테이너 / 타이틀
+****************************/
+.main-container {
+  text-align: center;
+}
+
+.title-container {
+  margin-bottom: 20px;
+}
+
+.words {
+  color: rgb(255, 0, 111);
+  font-size: 2.7rem;
+  font-weight: bold;
+  text-shadow: 5px 5px 4px rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .main-container {
+    padding: 10px 0;
+  }
+
+  .words {
+    font-size: 1.7rem;
+    margin-bottom: 30px;
+  }
+
+  .nav-container {
+    padding: 10px;
+    margin-bottom: 0;
+  }
+
+  .home-btn .icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  #menu-btn {
+    height: 35px;
+    width: 70px;
+  }
+}

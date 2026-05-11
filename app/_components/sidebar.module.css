@@ -1,0 +1,131 @@
+/* 배경 오버레이 */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 900;
+}
+
+.backdropOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 사이드바 본체 (우측 슬라이드인) */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 80vw;
+  background: #2d2d2d;
+  color: #ffffff;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.4);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 901;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarOpen {
+  transform: translateX(0);
+}
+
+/* 상단: 닫기 X */
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 12px 0;
+}
+
+.closeBtn {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  color: #ffffffcc;
+  cursor: pointer;
+  font-size: 1.8rem;
+  line-height: 1;
+  padding: 0;
+  border-radius: 4px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.closeBtn:hover {
+  background-color: #ffffff22;
+  color: #ffffff;
+}
+
+/* 메뉴 리스트 */
+.nav {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0 24px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 24px;
+  color: #ffffff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: left;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+  font-family: inherit;
+}
+
+.item:hover {
+  background-color: #ffffff11;
+}
+
+.toggleItem {
+  /* 같은 .item 스타일에 chevron 정렬을 위한 변형 */
+}
+
+.chevron {
+  font-size: 0.9rem;
+  color: #ffffffaa;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Service 하위 항목 (토글로 접힘) */
+.subItems {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+  background-color: #00000022;
+}
+
+.subItemsOpen {
+  max-height: 200px;
+}
+
+.subItem {
+  display: block;
+  padding: 12px 24px 12px 48px;
+  color: #ffffffcc;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.subItem:hover {
+  background-color: #ffffff11;
+  color: #ffffff;
+}
