@@ -4,277 +4,281 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 import type { Category } from "@/lib/supabase";
 import styles from "./youtube.module.css";
 import CategoryModal from "./CategoryModal";
-import FilterModal from "./FilterModal";
+import FilterModal, { SortOrder } from "./FilterModal";
 import {
-  createCategory,
-  createLink,
-  deleteLink,
-  ensureCategory,
-  listCategories,
-  listLinks,
-  type LinkWithCategory,
+    createCategory,
+    createLink,
+    deleteLink,
+    ensureCategory,
+    listCategories,
+    listLinks,
+    type LinkWithCategory,
 } from "./actions";
 
 const DEFAULT_CATEGORY = "노래";
 
 function parseYouTubeLink(link: string): string | null {
-  const trimmed = link.trim();
-  if (!trimmed) return null;
-  let videoId = "";
-  let queryParams = "";
-  if (trimmed.includes("youtu.be/")) {
-    const [id, params = ""] = trimmed.split("youtu.be/")[1].split("?");
-    videoId = id;
-    queryParams = params ? `?${params}` : "";
-  } else if (trimmed.includes("youtube.com/watch?v=")) {
-    const [id, params = ""] = trimmed.split("v=")[1].split("&");
-    videoId = id;
-    queryParams = params ? `?${params}` : "";
-  } else if (trimmed.includes("youtube.com/live/")) {
-    const [id, params = ""] = trimmed.split("youtube.com/live/")[1].split("?");
-    videoId = id;
-    queryParams = params ? `?${params}` : "";
-  } else {
-    return null;
-  }
-  return `https://www.youtube-nocookie.com/embed/${videoId}${queryParams}`;
+    const trimmed = link.trim();
+    if (!trimmed) return null;
+    let videoId = "";
+    let queryParams = "";
+    if (trimmed.includes("youtu.be/")) {
+        const [id, params = ""] = trimmed.split("youtu.be/")[1].split("?");
+        videoId = id;
+        queryParams = params ? `?${params}` : "";
+    } else if (trimmed.includes("youtube.com/watch?v=")) {
+        const [id, params = ""] = trimmed.split("v=")[1].split("&");
+        videoId = id;
+        queryParams = params ? `?${params}` : "";
+    } else if (trimmed.includes("youtube.com/live/")) {
+        const [id, params = ""] = trimmed.split("youtube.com/live/")[1].split("?");
+        videoId = id;
+        queryParams = params ? `?${params}` : "";
+    } else {
+        return null;
+    }
+    return `https://www.youtube-nocookie.com/embed/${videoId}${queryParams}`;
 }
 
 function extractVideoId(embedURL: string): string {
-  const m = embedURL.match(/embed\/([^?]+)/);
-  return m ? m[1] : "";
+    const m = embedURL.match(/embed\/([^?]+)/);
+    return m ? m[1] : "";
 }
 
 export default function YouTubePage() {
-  const [inputLink, setInputLink] = useState("");
-  const [tempEmbedURL, setTempEmbedURL] = useState<string | null>(null);
-  const [savedVideos, setSavedVideos] = useState<LinkWithCategory[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [showFilterModal, setShowFilterModal] = useState(false);
-  const [swipedId, setSwipedId] = useState<number | null>(null);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  // 빈 배열 = "모두" (전체 표시). 값이 있으면 해당 카테고리만 필터링
-  const [filterCategoryIds, setFilterCategoryIds] = useState<number[]>([]);
-  // 영상 표시 열 수 (1 또는 2)
-  const [columns, setColumns] = useState<number>(1);
+    const [inputLink, setInputLink] = useState("");
+    const [tempEmbedURL, setTempEmbedURL] = useState<string | null>(null);
+    const [savedVideos, setSavedVideos] = useState<LinkWithCategory[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [showModal, setShowModal] = useState(false);
+    const [showFilterModal, setShowFilterModal] = useState(false);
+    const [swipedId, setSwipedId] = useState<number | null>(null);
+    const [loadError, setLoadError] = useState<string | null>(null);
+    // 빈 배열 = "모두" (전체 표시). 값이 있으면 해당 카테고리만 필터링
+    const [filterCategoryIds, setFilterCategoryIds] = useState<number[]>([]);
+    // 영상 표시 열 수 (1 또는 2)
+    const [columns, setColumns] = useState<number>(1);
 
-  const refresh = useCallback(async () => {
-    try {
-      const [cats, links] = await Promise.all([listCategories(), listLinks()]);
-      setCategories(cats);
-      setSavedVideos(links);
-      setLoadError(null);
-    } catch (e) {
-      setLoadError(e instanceof Error ? e.message : "데이터 로드 실패");
-    }
-  }, []);
+    const refresh = useCallback(async () => {
+        try {
+            const [cats, links] = await Promise.all([listCategories(), listLinks()]);
+            setCategories(cats);
+            setSavedVideos(links);
+            setLoadError(null);
+        } catch (e) {
+            setLoadError(e instanceof Error ? e.message : "데이터 로드 실패");
+        }
+    }, []);
 
-  // 최초 진입 시 기본 카테고리("노래") 보장 후 데이터 로드
-  useEffect(() => {
-    (async () => {
-      try {
-        await ensureCategory(DEFAULT_CATEGORY);
-      } catch {
-        // 환경변수 누락 등의 이유로 실패해도 refresh 가 에러 처리
-      }
-      await refresh();
-    })();
-  }, [refresh]);
-
-  function runSearch(link: string): boolean {
-    if (!link.trim()) {
-      alert("주소를 입력하세요.");
-      return false;
-    }
-    const url = parseYouTubeLink(link);
-    if (!url) {
-      alert("올바른 주소를 입력하세요.");
-      return false;
-    }
-    setTempEmbedURL(url);
-    return true;
-  }
-
-  async function handlePaste() {
-    try {
-      const text = (await navigator.clipboard.readText()).trim();
-      if (!text) {
-        alert("클립보드가 비어있습니다.");
-        return;
-      }
-      setInputLink(text);
-      if (runSearch(text)) {
-        setInputLink(""); // 검색 성공 시 입력값 비우기
-      }
-    } catch {
-      alert("클립보드 접근 권한이 필요합니다. 직접 붙여넣기 해주세요.");
-    }
-  }
-
-  function handleSaveClick() {
-    if (!tempEmbedURL) {
-      alert("저장할 동영상이 없습니다.");
-      return;
-    }
-    if (savedVideos.some((v) => v.link_address === tempEmbedURL)) {
-      alert("이미 저장된 동영상입니다.");
-      return;
-    }
-    setShowModal(true);
-  }
-
-  async function handleConfirmSave(categoryId: number) {
-    if (!tempEmbedURL) return;
-    await createLink(tempEmbedURL, categoryId);
-    setTempEmbedURL(null);
-    setInputLink("");
-    setShowModal(false);
-    await refresh();
-  }
-
-  async function handleCreateCategory(name: string) {
-    const created = await createCategory(name);
-    await refresh();
-    return created;
-  }
-
-  function toggleFilter(catId: number) {
-    setFilterCategoryIds((prev) =>
-      prev.includes(catId) ? prev.filter((id) => id !== catId) : [...prev, catId],
-    );
-  }
-
-  async function handleDelete(id: number) {
-    await deleteLink(id);
-    if (swipedId === id) setSwipedId(null);
-    await refresh();
-  }
-
-  useEffect(() => {
-    if (swipedId == null) return;
-    function onDocClick(e: MouseEvent) {
-      const card = document.querySelector(`[data-card-id="${swipedId}"]`);
-      if (card && !card.contains(e.target as Node)) {
-        setSwipedId(null);
-      }
-    }
-    document.addEventListener("click", onDocClick);
-    return () => document.removeEventListener("click", onDocClick);
-  }, [swipedId]);
-
-  return (
-    <div className="main-container">
-      <div className="title-container">
-        <p className="words">Free YouTube Premium</p>
-      </div>
-
-      <div className={styles.searchContainer}>
-        <input
-          type="text"
-          className={styles.input}
-          placeholder="Paste YouTube Link"
-          value={inputLink}
-          onChange={(e) => setInputLink(e.target.value)}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              if (runSearch(inputLink)) setInputLink("");
+    // 최초 진입 시 기본 카테고리("노래") 보장 후 데이터 로드
+    useEffect(() => {
+        (async () => {
+            try {
+                await ensureCategory(DEFAULT_CATEGORY);
+            } catch {
+                // 환경변수 누락 등의 이유로 실패해도 refresh 가 에러 처리
             }
-          }}
-        />
-        <button type="button" className={styles.pasteBtn} onClick={handlePaste}>
-          Paste
-        </button>
-        <button type="button" className={styles.saveBtn} onClick={handleSaveClick}>
-          Save
-        </button>
-      </div>
+            await refresh();
+        })();
+    }, [refresh]);
 
-      {loadError && (
-        <p style={{ color: "#ffb3b3", textAlign: "center", margin: "10px 20px" }}>
-          {loadError}
-        </p>
-      )}
+    function runSearch(link: string): boolean {
+        if (!link.trim()) {
+            alert("주소를 입력하세요.");
+            return false;
+        }
+        const url = parseYouTubeLink(link);
+        if (!url) {
+            alert("올바른 주소를 입력하세요.");
+            return false;
+        }
+        setTempEmbedURL(url);
+        return true;
+    }
 
-      <div
-        className={styles.videoContainer}
-        style={{ "--cols": columns } as CSSProperties}
-      >
-        {tempEmbedURL && (
-          <div className={styles.videoResponsive}>
-            <iframe
-              src={tempEmbedURL}
-              title="YouTube preview"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
-          </div>
-        )}
-        {(filterCategoryIds.length === 0
-          ? savedVideos
-          : savedVideos.filter(
-              (v) =>
-                v.link_category != null &&
-                filterCategoryIds.includes(v.link_category),
-            )
-        ).map((v) => (
-          <SavedVideoCard
-            key={v.link_id}
-            video={v}
-            swiped={swipedId === v.link_id}
-            onSwipeOpen={() => setSwipedId(v.link_id)}
-            onSwipeClose={() => setSwipedId(null)}
-            onDelete={() => handleDelete(v.link_id)}
-          />
-        ))}
-      </div>
+    async function handlePaste() {
+        try {
+            const text = (await navigator.clipboard.readText()).trim();
+            if (!text) {
+                alert("클립보드가 비어있습니다.");
+                return;
+            }
+            setInputLink(text);
+            if (runSearch(text)) {
+                setInputLink(""); // 검색 성공 시 입력값 비우기
+            }
+        } catch {
+            alert("클립보드 접근 권한이 필요합니다. 직접 붙여넣기 해주세요.");
+        }
+    }
 
-      {showModal && (
-        <CategoryModal
-          categories={categories}
-          onCancel={() => setShowModal(false)}
-          onConfirm={handleConfirmSave}
-          onCreateCategory={handleCreateCategory}
-        />
-      )}
+    function handleSaveClick() {
+        if (!tempEmbedURL) {
+            alert("저장할 동영상이 없습니다.");
+            return;
+        }
+        if (savedVideos.some((v) => v.link_address === tempEmbedURL)) {
+            alert("이미 저장된 동영상입니다.");
+            return;
+        }
+        setShowModal(true);
+    }
 
-      <button
-        type="button"
-        className={styles.filterFab}
-        onClick={() => setShowFilterModal(true)}
-        aria-label="필터"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="80%"
-          height="80%"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-        </svg>
-        {filterCategoryIds.length > 0 && (
-          <span className={styles.filterFabBadge}>
+    async function handleConfirmSave(categoryId: number) {
+        if (!tempEmbedURL) return;
+        await createLink(tempEmbedURL, categoryId);
+        setTempEmbedURL(null);
+        setInputLink("");
+        setShowModal(false);
+        await refresh();
+    }
+
+    async function handleCreateCategory(name: string) {
+        const created = await createCategory(name);
+        await refresh();
+        return created;
+    }
+
+    function toggleFilter(catId: number) {
+        setFilterCategoryIds((prev) =>
+            prev.includes(catId) ? prev.filter((id) => id !== catId) : [...prev, catId],
+        );
+    }
+
+    async function handleDelete(id: number) {
+        await deleteLink(id);
+        if (swipedId === id) setSwipedId(null);
+        await refresh();
+    }
+
+    useEffect(() => {
+        if (swipedId == null) return;
+
+        function onDocClick(e: MouseEvent) {
+            const card = document.querySelector(`[data-card-id="${swipedId}"]`);
+            if (card && !card.contains(e.target as Node)) {
+                setSwipedId(null);
+            }
+        }
+
+        document.addEventListener("click", onDocClick);
+        return () => document.removeEventListener("click", onDocClick);
+    }, [swipedId]);
+
+    return (
+        <div className="main-container">
+            <div className="title-container">
+                <p className="words">Free YouTube Premium</p>
+            </div>
+
+            <div className={styles.searchContainer}>
+                <input
+                    type="text"
+                    className={styles.input}
+                    placeholder="Paste YouTube Link"
+                    value={inputLink}
+                    onChange={(e) => setInputLink(e.target.value)}
+                    onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                            if (runSearch(inputLink)) setInputLink("");
+                        }
+                    }}
+                />
+                <button type="button" className={styles.pasteBtn} onClick={handlePaste}>
+                    Paste
+                </button>
+                <button type="button" className={styles.saveBtn} onClick={handleSaveClick}>
+                    Save
+                </button>
+            </div>
+
+            {loadError && (
+                <p style={{color: "#ffb3b3", textAlign: "center", margin: "10px 20px"}}>
+                    {loadError}
+                </p>
+            )}
+
+            <div
+                className={styles.videoContainer}
+                style={{"--cols": columns} as CSSProperties}
+            >
+                {tempEmbedURL && (
+                    <div className={styles.videoResponsive}>
+                        <iframe
+                            src={tempEmbedURL}
+                            title="YouTube preview"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        />
+                    </div>
+                )}
+                {(filterCategoryIds.length === 0
+                        ? savedVideos
+                        : savedVideos.filter(
+                            (v) =>
+                                v.link_category != null &&
+                                filterCategoryIds.includes(v.link_category),
+                        )
+                ).map((v) => (
+                    <SavedVideoCard
+                        key={v.link_id}
+                        video={v}
+                        swiped={swipedId === v.link_id}
+                        onSwipeOpen={() => setSwipedId(v.link_id)}
+                        onSwipeClose={() => setSwipedId(null)}
+                        onDelete={() => handleDelete(v.link_id)}
+                    />
+                ))}
+            </div>
+
+            {showModal && (
+                <CategoryModal
+                    categories={categories}
+                    onCancel={() => setShowModal(false)}
+                    onConfirm={handleConfirmSave}
+                    onCreateCategory={handleCreateCategory}
+                />
+            )}
+
+            <button
+                type="button"
+                className={styles.filterFab}
+                onClick={() => setShowFilterModal(true)}
+                aria-label="필터"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="80%"
+                    height="80%"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                {filterCategoryIds.length > 0 && (
+                    <span className={styles.filterFabBadge}>
             {filterCategoryIds.length}
           </span>
-        )}
-      </button>
+                )}
+            </button>
 
-      {showFilterModal && (
-        <FilterModal
-          categories={categories}
-          filterCategoryIds={filterCategoryIds}
-          columns={columns}
-          onToggle={toggleFilter}
-          onSelectAll={() => setFilterCategoryIds([])}
-          onColumnsChange={setColumns}
-          onClose={() => setShowFilterModal(false)}
-        />
+            {showFilterModal && (
+                <FilterModal
+                    categories={categories}
+                    filterCategoryIds={filterCategoryIds}
+                    columns={columns}
+                    onToggle={toggleFilter}
+                    onSelectAll={() => setFilterCategoryIds([])}
+                    onColumnsChange={setColumns}
+                    onClose={() => setShowFilterModal(false)} sortOrder={"recent"}
+                    onSortChange={function (order: SortOrder): void {
+                        throw new Error("Function not implemented.");
+                    }}        />
       )}
     </div>
   );
