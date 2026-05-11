@@ -413,7 +413,7 @@
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  margin-bottom: 16px;
+  /*margin-bottom: 16px;*/
 }
 
 .filterChip {
@@ -469,9 +469,16 @@
     margin: 40px auto 30px auto;
   }
 
+    .input {
+        width: 320px;
+        height: 40px;
+        align-items: center;
+        padding: 10px 20px;
+    }
+
   .input {
     width: 80%;
-      height: 40px;
+      height: 32px;
     padding: 0 7px;
     font-size: 0.7rem;
   }
@@ -479,11 +486,11 @@
   .pasteBtn,
   .saveBtn {
     font-size: 0.85rem;
-      font-weight: 500;
+      height: 32px;
   }
 
   .videoContainer {
-    padding: 5%;
+    padding: 2%;
   }
 
   .savedVideo {
@@ -493,4 +500,15 @@
   .deleteButton {
     font-size: 0.75rem;
   }
+
+    .filterFab {
+        bottom: 8px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .modal {
+        position: relative;
+        max-width: 300px
+    ;}
 }

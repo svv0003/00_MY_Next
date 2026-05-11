@@ -34,7 +34,7 @@ export default function FilterModal({
         >
           ×
         </button>
-        <h2 className={styles.modalTitle}>필터</h2>
+        {/*<h2 className={styles.modalTitle}>필터</h2>*/}
 
         <label className={styles.modalLabel}>표시 방식</label>
         <div className={styles.filterRowModal}>
@@ -49,7 +49,9 @@ export default function FilterModal({
             </button>
           ))}
         </div>
+<div style={{ height: '20px'}}>
 
+</div>
         <label className={styles.modalLabel}>카테고리</label>
         <div className={styles.filterRowModal}>
           <button
