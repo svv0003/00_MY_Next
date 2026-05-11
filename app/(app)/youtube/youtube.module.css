@@ -64,8 +64,12 @@
 영상 컨테이너
 ****************************/
 .videoContainer {
+  /* 영상 영역 가로 90% — 양쪽 5% 패딩 */
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr));
+  gap: 12px;
   text-align: center;
-  padding: 5% 10%;
+  padding: 20px 5%;
   width: 100%;
   box-sizing: border-box;
   justify-self: stretch;
@@ -73,10 +77,9 @@
 
 .videoResponsive {
   position: relative;
-  padding-bottom: 56.25%;
+  padding-bottom: 56.25%; /* 16:9 비율 */
   overflow: hidden;
   width: 100%;
-  margin: 0 auto 10px auto;
   border-radius: 2%;
 }
 
@@ -97,7 +100,6 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  margin: 0 auto 10px auto;
   border-radius: 2%;
   background: #000;
   touch-action: pan-y;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import type { Category } from "@/lib/supabase";
 import styles from "./youtube.module.css";
 import CategoryModal from "./CategoryModal";
@@ -56,6 +56,8 @@ export default function YouTubePage() {
   const [loadError, setLoadError] = useState<string | null>(null);
   // 빈 배열 = "모두" (전체 표시). 값이 있으면 해당 카테고리만 필터링
   const [filterCategoryIds, setFilterCategoryIds] = useState<number[]>([]);
+  // 영상 표시 열 수 (1 또는 2)
+  const [columns, setColumns] = useState<number>(1);
 
   const refresh = useCallback(async () => {
     try {
@@ -194,7 +196,10 @@ export default function YouTubePage() {
         </p>
       )}
 
-      <div className={styles.videoContainer}>
+      <div
+        className={styles.videoContainer}
+        style={{ "--cols": columns } as CSSProperties}
+      >
         {tempEmbedURL && (
           <div className={styles.videoResponsive}>
             <iframe
@@ -264,8 +269,10 @@ export default function YouTubePage() {
         <FilterModal
           categories={categories}
           filterCategoryIds={filterCategoryIds}
+          columns={columns}
           onToggle={toggleFilter}
           onSelectAll={() => setFilterCategoryIds([])}
+          onColumnsChange={setColumns}
           onClose={() => setShowFilterModal(false)}
         />
       )}

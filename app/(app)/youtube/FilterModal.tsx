@@ -6,16 +6,20 @@ import styles from "./youtube.module.css";
 type Props = {
   categories: Category[];
   filterCategoryIds: number[];
+  columns: number;
   onToggle: (catId: number) => void;
   onSelectAll: () => void;
+  onColumnsChange: (cols: number) => void;
   onClose: () => void;
 };
 
 export default function FilterModal({
   categories,
   filterCategoryIds,
+  columns,
   onToggle,
   onSelectAll,
+  onColumnsChange,
   onClose,
 }: Props) {
   const allActive = filterCategoryIds.length === 0;
@@ -30,8 +34,23 @@ export default function FilterModal({
         >
           ×
         </button>
-        <h2 className={styles.modalTitle}>카테고리 필터</h2>
+        <h2 className={styles.modalTitle}>필터</h2>
 
+        <label className={styles.modalLabel}>표시 방식</label>
+        <div className={styles.filterRowModal}>
+          {[1, 2, 3].map((n) => (
+            <button
+              key={n}
+              type="button"
+              className={`${styles.filterChip} ${columns === n ? styles.filterChipActive : ""}`}
+              onClick={() => onColumnsChange(n)}
+            >
+              {n}열
+            </button>
+          ))}
+        </div>
+
+        <label className={styles.modalLabel}>카테고리</label>
         <div className={styles.filterRowModal}>
           <button
             type="button"
