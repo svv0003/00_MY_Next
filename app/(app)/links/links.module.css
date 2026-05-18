@@ -1,0 +1,336 @@
+/****************************
+검색 영역
+****************************/
+.searchContainer {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.input {
+    flex: 1;
+    height: 40px;
+    padding: 0 14px;
+    background-color: #7c7c7c;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+    outline: none;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.input::placeholder {
+    color: #ffffffaa;
+}
+
+.pasteBtn,
+.saveBtn {
+    width: 70px;
+    height: 40px;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    border-left: none;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-color: rgb(200, 0, 87);
+}
+
+.pasteBtn {
+    border-radius: 0;
+}
+
+.saveBtn {
+    border-radius: 0 4px 4px 0;
+}
+
+.pasteBtn:hover:not(:disabled),
+.saveBtn:hover:not(:disabled) {
+    background-color: rgb(170, 0, 87);
+}
+
+.pasteBtn:disabled,
+.saveBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/****************************
+링크 목록
+****************************/
+.linkList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 0 40px;
+}
+
+.emptyMsg {
+    color: #ffffffaa;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9rem;
+}
+
+.errorMsg {
+    color: #ffb3b3;
+    text-align: center;
+    margin: 8px 20px;
+    font-size: 0.85rem;
+}
+
+/****************************
+카드 (스와이프 삭제)
+****************************/
+.card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #3a3a3a;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.deleteBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background-color: #ff4d4d;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.deleteBtn:hover {
+    background-color: rgb(170, 0, 87);
+}
+
+.cardWrapper {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background: #3a3a3a;
+    position: relative;
+    z-index: 2;
+    min-height: 72px;
+    box-sizing: border-box;
+}
+
+.cardWrapper:hover {
+    background: #444444;
+}
+
+.preview {
+    width: 80px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #2a2a2a;
+    flex-shrink: 0;
+}
+
+.noImage {
+    width: 80px;
+    height: 54px;
+    border-radius: 6px;
+    background: #1a1a1a;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666666;
+    font-size: 0.65rem;
+    letter-spacing: 0.03em;
+}
+
+.cardText {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+
+.cardTitle {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cardDomain {
+    color: #ffffffaa;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/****************************
+제목 입력 모달
+****************************/
+.modalBackdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal {
+    width: 100%;
+    max-width: 420px;
+    background: #2d2d2d;
+    border: 1px solid #ffffff22;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+}
+
+.modalTitle {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+    color: rgb(255, 0, 111);
+    text-align: center;
+}
+
+.modalError {
+    background: #ff4d4d33;
+    color: #ffb3b3;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 0 0 12px;
+    text-align: center;
+}
+
+.modalInput {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    background: #3a3a3a;
+    color: #ffffff;
+    border: 1px solid #ffffff44;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    outline: none;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+.modalInput:focus {
+    border-color: rgb(200, 0, 87);
+}
+
+.modalActions {
+    display: flex;
+    gap: 8px;
+}
+
+.modalCancel,
+.modalConfirm {
+    flex: 1;
+    height: 40px;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #ffffff;
+    transition: background-color 0.2s ease;
+}
+
+.modalCancel {
+    background-color: #4f4f4f;
+}
+
+.modalCancel:hover:not(:disabled) {
+    background-color: #666;
+}
+
+.modalConfirm {
+    background-color: rgb(200, 0, 87);
+}
+
+.modalConfirm:hover:not(:disabled) {
+    background-color: rgb(170, 0, 87);
+}
+
+.modalCancel:disabled,
+.modalConfirm:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/****************************
+모바일
+****************************/
+@media (max-width: 760px) {
+    .searchContainer {
+        max-width: 90%;
+        margin: 20px auto;
+    }
+
+    .input {
+        height: 36px;
+        font-size: 0.8rem;
+        padding: 0 10px;
+    }
+
+    .pasteBtn,
+    .saveBtn {
+        width: 60px;
+        height: 36px;
+        font-size: 0.8rem;
+    }
+
+    .linkList {
+        max-width: 90%;
+    }
+
+    .cardWrapper {
+        padding: 10px 12px;
+        gap: 10px;
+        min-height: 64px;
+    }
+
+    .preview,
+    .noImage {
+        width: 64px;
+        height: 44px;
+    }
+
+    .cardTitle {
+        font-size: 0.85rem;
+    }
+
+    .deleteBtn {
+        width: 70px;
+        font-size: 0.8rem;
+    }
+}

@@ -36,3 +36,21 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_youtube_links_address_unique
 -- RLS 활성화 (정책 없음 = anon 접근 차단, service_role 만 통과)
 ALTER TABLE youtube_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE youtube_links      ENABLE ROW LEVEL SECURITY;
+
+-- ===========================================================================
+-- 링크 북마크 테이블
+-- ===========================================================================
+CREATE TABLE IF NOT EXISTS bookmark_links (
+    link_id          BIGSERIAL PRIMARY KEY,
+    link_url         TEXT NOT NULL,
+    link_title       TEXT NOT NULL DEFAULT '',
+    link_image       TEXT,
+    link_created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 같은 URL 중복 저장 방지
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bookmark_links_url_unique
+    ON bookmark_links (link_url);
+
+-- RLS 활성화 (service_role 만 접근)
+ALTER TABLE bookmark_links ENABLE ROW LEVEL SECURITY;

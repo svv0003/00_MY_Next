@@ -11,6 +11,9 @@ export default function Home() {
         <Link href="/lottery" className={styles.linkBtn}>
           Lottery Number Generator
         </Link>
+        <Link href="/links" className={styles.linkBtn}>
+          Links
+        </Link>
       </div>
     </div>
   );
